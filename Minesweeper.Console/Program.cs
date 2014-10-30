@@ -1,4 +1,6 @@
-﻿namespace Minesweeper.Console
+﻿using System;
+
+namespace Minesweeper.Console
 {
     class Program
     {
@@ -14,8 +16,11 @@
             System.Console.WriteLine("||                                             ||");
             System.Console.WriteLine("||          -- S  W  E  E  P  E  R --          ||");
             System.Console.WriteLine("|===============================================|");
+            System.Console.WriteLine(Environment.NewLine);
+            System.Console.WriteLine("            Press <ENTER> to continue");
 
             System.Console.ReadKey();
+
         }
     }
 }
