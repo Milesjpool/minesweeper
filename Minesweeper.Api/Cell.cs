@@ -2,5 +2,6 @@
 {
     public class Cell
     {
+        public bool IsMine { get; set; }
     }
 }

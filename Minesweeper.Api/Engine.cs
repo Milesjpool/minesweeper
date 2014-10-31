@@ -2,9 +2,9 @@
 {
     public static class Engine
     {
-        public static Game NewGame(int gridSize)
+        public static Game NewGame(int gridSize, decimal mineDensity)
         {
-            return new Game(gridSize);
+            return new Game(gridSize, mineDensity);
         }
     }
 }

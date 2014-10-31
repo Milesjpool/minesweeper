@@ -1,24 +1,14 @@
-﻿namespace Minesweeper.Api
+﻿using System;
+
+namespace Minesweeper.Api
 {
     public class Game
     {
-        public Cell[,] Grid { get; private set; }
+        public Minefield Minefield { get; set; }
 
-        public Game(int gridSize)
+        public Game(int size, decimal mineDensity)
         {
-            Grid = new Cell[gridSize, gridSize];
-            PopulateGrid(gridSize);
-        }
-
-        private void PopulateGrid(int gridSize)
-        {
-            for (var x = 0; x < gridSize; x++)
-            {
-                for (var y = 0; y < gridSize; y++)
-                {
-                    Grid[x, y] = new Cell();
-                }
-            }
+            Minefield = new Minefield(size, mineDensity);
         }
     }
 }
