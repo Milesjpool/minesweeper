@@ -16,6 +16,7 @@ namespace Minesweeper.Api
             _numberOfMines = (int) (_width*_height*mineDensity);
             BuildCellGrid();
             BuryMines();
+			PopulateAdjacentMineValues();
         }
 
         private void BuildCellGrid()
@@ -41,7 +42,6 @@ namespace Minesweeper.Api
                 var x = position%_width;
                 var y = position/_width;
                 var cell = Cells[x, y];
-                Console.WriteLine("X:" + x + ", Y: " + y + ", IsMine: " + cell.IsMine);
                 if (!cell.IsMine)
                 {
                     cell.IsMine = true;
@@ -49,5 +49,45 @@ namespace Minesweeper.Api
                 }
             }
         }
+
+	    public void PopulateAdjacentMineValues()
+	    {
+		    for (int x = 0; x < _width; x++)
+		    {
+			    for (int y = 0; y < _height; y++)
+			    {
+				    if (!Cells[x, y].IsMine)
+					{
+						Cells[x, y].AdjacentMines = MinesAdjacentTo(x, y);
+					}
+			    }
+		    }
+	    }
+
+	    private int MinesAdjacentTo(int x, int y)
+	    {
+		    var adjacentMines = 0;
+		    var thisCell = Cells[x, y];
+		    for (int dx = -1; dx <= 1; dx++)
+		    {
+				for (int dy = -1; dy <= 1; dy++)
+				{
+					if (IsValidCell(x + dx, y + dy) && (Cells[x + dx, y + dy] != thisCell))
+					{
+						var adjacentCell = Cells[x + dx, y + dy];
+						if (adjacentCell.IsMine) adjacentMines++;
+					}
+				}
+		    }
+		    return adjacentMines;
+	    }
+
+	    private bool IsValidCell(int x, int y)
+	    {
+		    if ((x < 0) || (y < 0)) return false;
+		    if (x >= _width) return false;
+		    if (y >= _height) return false;
+		    return true;
+	    }
     }
 }
