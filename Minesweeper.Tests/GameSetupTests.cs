@@ -30,7 +30,7 @@ namespace Minesweeper.Tests
 		[Test]
 		public void New_game_should_contain_grid_of_cells()
 		{
-			Assert.IsInstanceOf(typeof(Cell), _game.Minefield.Cells[0, 0]);
+			Assert.IsInstanceOf(typeof(Cell), _game.Minefield[0, 0]);
 		}
 	}
 }
