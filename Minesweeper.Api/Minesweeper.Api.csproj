@@ -42,7 +42,6 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Grid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

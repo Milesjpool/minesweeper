@@ -1,5 +1,4 @@
-﻿using System;
-using Minesweeper.Api;
+﻿using Minesweeper.Api;
 using NUnit.Framework;
 
 namespace Minesweeper.Tests
