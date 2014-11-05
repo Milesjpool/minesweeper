@@ -11,7 +11,8 @@ namespace Minesweeper.Tests
 		[TestCase(50)]
 		public void Number_of_cells_should_equal_size_squared(int size)
 		{
-			var game = new Game(size);
+			var gameProperties = new GameProperties(size, size);
+			var game = new Game(gameProperties);
 
 			Assert.That(game.Minefield.Length, Is.EqualTo(size * size));
 		}
@@ -23,7 +24,8 @@ namespace Minesweeper.Tests
 		[TestCase(50, 1)]
 		public void Minefield_should_contain_expected_number_of_mines(int size, decimal mineDensity)
 		{
-			var game = new Game(size, mineDensity);
+			var gameProperties = new GameProperties(size, size, mineDensity);
+			var game = new Game(gameProperties);
 
 			var numberOfMines = 0;
 			var expectedNumber = (int)(size * size * mineDensity);

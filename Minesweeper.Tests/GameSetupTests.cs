@@ -11,7 +11,7 @@ namespace Minesweeper.Tests
 		[SetUp]
 		public void SetUp()
 		{
-			_game = Engine.NewGame(30);
+			_game = Engine.NewGame(new GameProperties(30, 30));
 		}
 
 		[Test]

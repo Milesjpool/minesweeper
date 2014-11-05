@@ -1,10 +1,13 @@
-﻿namespace Minesweeper.Api
+﻿using System.Collections.Generic;
+
+namespace Minesweeper.Api
 {
     public static class Engine
     {
-	    public static Game NewGame(int gridSize, decimal mineDensity = 0.2m)
+
+	    public static Game NewGame(GameProperties properties)
 	    {
-			return new Game(gridSize, mineDensity);
+			return new Game(properties);
 	    }
     }
 }

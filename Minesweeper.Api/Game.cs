@@ -4,22 +4,15 @@ namespace Minesweeper.Api
 {
 	public class Game
 	{
-		public bool IsActive { get; private set; }
-		public bool IsVictory { get; private set; }
+		public GameState State { get; private set; }
 		public Cell[,] Minefield { get; private set; }
-		private readonly int _width;
-		private readonly int _height;
-		private readonly int _numberOfMines;
+		private readonly GameProperties _properties;
 		private int _safeCellsRemaining;
 
-		public Game(int size, decimal mineDensity = 0.2m)
+		public Game(GameProperties properties)
 		{
-			IsActive = true;
-			IsVictory = false;
-			_width = size;
-			_height = size;
-			_numberOfMines = (int)(_width * _height * mineDensity);
-			Minefield = new Cell[_width, _height];
+			State = GameState.InProgress;
+			_properties = properties;
 			BuildCellGrid();
 			BuryMines();
 			PopulateAdjacentMineValues();
@@ -27,9 +20,12 @@ namespace Minesweeper.Api
 
 		private void BuildCellGrid()
 		{
-			for (var x = 0; x < _width; x++)
+			var width = _properties.Width;
+			var height = _properties.Height;
+			Minefield = new Cell[width, height];
+			for (var x = 0; x < width; x++)
 			{
-				for (var y = 0; y < _height; y++)
+				for (var y = 0; y < height; y++)
 				{
 					Minefield[x, y] = new Cell();
 				}
@@ -38,15 +34,14 @@ namespace Minesweeper.Api
 
 		private void BuryMines()
 		{
-			var spaces = _width * _height;
-			_safeCellsRemaining = spaces;
+			_safeCellsRemaining = _properties.Spaces;
 			var random = new Random();
 			var minesPlaced = 0;
-			while (minesPlaced < _numberOfMines)
+			while (minesPlaced < _properties.NumberOfMines)
 			{
-				var position = random.Next(spaces);
-				var x = position % _width;
-				var y = position / _width;
+				var position = random.Next(_properties.Spaces);
+				var x = position % _properties.Width;
+				var y = position / _properties.Width;
 				var cell = Minefield[x, y];
 				if (!cell.IsMine)
 				{
@@ -59,9 +54,9 @@ namespace Minesweeper.Api
 
 		public void PopulateAdjacentMineValues()
 		{
-			for (int x = 0; x < _width; x++)
+			for (int x = 0; x < _properties.Width; x++)
 			{
-				for (int y = 0; y < _height; y++)
+				for (int y = 0; y < _properties.Height; y++)
 				{
 					var cell = Minefield[x, y];
 					if (!cell.IsMine)
@@ -93,34 +88,33 @@ namespace Minesweeper.Api
 		private bool IsValidCell(int x, int y)
 		{
 			if ((x < 0) || (y < 0)) return false;
-			if (x >= _width) return false;
-			if (y >= _height) return false;
+			if (x >= _properties.Width) return false;
+			if (y >= _properties.Height) return false;
 			return true;
 		}
 
 		public void SelectCell(int x, int y)
 		{
-			Minefield[x, y].IsRevealed = true;
-			GetSelectionOutcome(x, y);
-		}
-
-		private void GetSelectionOutcome(int x, int y)
-		{
-			if (Minefield[x, y].IsMine) IsActive = false;
+			Minefield[x, y].State = CellState.Revealed;
+			if (Minefield[x, y].IsMine) State = GameState.Lost;
 			else
 			{
 				_safeCellsRemaining--;
 				if (_safeCellsRemaining == 0)
 				{
-					IsActive = false;
-					IsVictory = true;
+					State = GameState.Won;
 				}
 			}
 		}
 
 		public void NextState(int x, int y)
 		{
-			Minefield[x, y].State++;
+			var state = Minefield[x, y].State;
+			var stateVal = (int) state;
+			if (state != CellState.Revealed)
+			{
+				Minefield[x, y].State = (CellState)((stateVal + 1) % 3);
+			}
 		}
 	}
 }

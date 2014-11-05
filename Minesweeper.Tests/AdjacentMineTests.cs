@@ -9,7 +9,7 @@ namespace Minesweeper.Tests
 		[Test]
 		public void All_cells_should_start_with_adjacent_mine_value_0()
 		{
-			var game = new Game(50, 0);
+			var game = new Game(new GameProperties(50, 50, 0));
 			foreach (var cell in game.Minefield)
 			{
 				Assert.That(cell.AdjacentMines, Is.EqualTo(0));
@@ -19,7 +19,7 @@ namespace Minesweeper.Tests
 		[Test]
 		public void All_empty_should_be_given_the_expected_adjacent_mine_value()
 		{
-			var game = new Game(3);
+			var game = new Game(new GameProperties(3, 3, 0));
 			var minefield = game.Minefield;
 			minefield[0, 0].IsMine = true;
 			minefield[0, 1].IsMine = false;
