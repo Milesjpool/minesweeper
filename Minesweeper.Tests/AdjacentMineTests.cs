@@ -19,7 +19,8 @@ namespace Minesweeper.Tests
 		[Test]
 		public void All_empty_should_be_given_the_expected_adjacent_mine_value()
 		{
-			var game = new Game(new GameProperties(3, 3, 0));
+			var gameProperties = new GameProperties(3, 3, 0);
+			var game = new Game(gameProperties);
 			var minefield = game.Minefield;
 			minefield[0, 0].IsMine = true;
 			minefield[0, 1].IsMine = false;

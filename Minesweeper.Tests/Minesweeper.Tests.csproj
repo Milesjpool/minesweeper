@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdjacentMineTests.cs" />
+    <Compile Include="AutoRevealTests.cs" />
     <Compile Include="GameplayTests.cs" />
     <Compile Include="GameSetupTests.cs" />
     <Compile Include="MinefieldSetupTests.cs" />

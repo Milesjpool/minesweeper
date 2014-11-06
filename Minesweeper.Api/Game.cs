@@ -5,7 +5,7 @@ namespace Minesweeper.Api
 	public class Game
 	{
 		public GameState State { get; private set; }
-		public Cell[,] Minefield { get; private set; }
+		public Cell[,] Minefield { get; set; }
 		private readonly GameProperties _properties;
 		private int _safeCellsRemaining;
 
@@ -95,14 +95,38 @@ namespace Minesweeper.Api
 
 		public void SelectCell(int x, int y)
 		{
-			Minefield[x, y].State = CellState.Revealed;
-			if (Minefield[x, y].IsMine) State = GameState.Lost;
+			var cell = Minefield[x, y];
+			cell.State = CellState.Revealed;
+			GetSelectionOutcome(cell);
+			if ((!cell.IsMine) && (cell.AdjacentMines == 0))
+			{
+				RevealAdjacentCells(x, y);
+			}
+		}
+
+		private void GetSelectionOutcome(Cell cell)
+		{
+			if (cell.IsMine) State = GameState.Lost;
 			else
 			{
 				_safeCellsRemaining--;
 				if (_safeCellsRemaining == 0)
 				{
 					State = GameState.Won;
+				}
+			}
+		}
+
+		private void RevealAdjacentCells(int x, int y)
+		{
+			for (int dx = -1; dx <= 1; dx++)
+			{
+				for (int dy = -1; dy <= 1; dy++)
+				{
+					if (IsValidCell(x + dx, y + dy) && (Minefield[x + dx, y + dy].State != CellState.Revealed))
+					{
+						SelectCell(x + dx, y + dy);
+					}
 				}
 			}
 		}
